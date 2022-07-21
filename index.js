@@ -14,6 +14,7 @@ const SPACER_CHARACTER_SET = [
 	'╴',
 	'─',
 	'-',
+	'=',
 ];
 
 const REGEX = new RegExp(`^[${SPACER_CHARACTER_SET.join('')}]{5,}(.+?)[${SPACER_CHARACTER_SET.join('')}]{5,}$`);
