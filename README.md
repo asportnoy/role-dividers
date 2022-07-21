@@ -21,5 +21,5 @@ You can style the dividers by selecting the `.role-divider` class. Here's an exa
 ```
 ![Custom style](https://i.imgur.com/le8fziz.png)
 
-# Caveats
-As of now, it is not possible to remove divider roles from a member. In the meantime, you can temporarily disable the plugin, use a bot command, or use another device. This feature should be coming eventually™.
+# How do I remove a divider role from someone in my server?
+You can manage divider roles in the member context menu. Right click on the member and go to the "Roles" section, then click on any roles you want to remove.
