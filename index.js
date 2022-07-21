@@ -1,6 +1,9 @@
+/* globals powercord */
 const { Plugin } = require('powercord/entities');
 const { inject, uninject } = require('powercord/injector');
 const { getModule } = require('powercord/webpack');
+
+const Settings = require('./settings');
 
 const SPACER_CHARACTER_SET = [
 	'\\s',
@@ -32,15 +35,21 @@ module.exports = class MessageTooltips extends Plugin {
 
 		this.injectRoles();
 
-		console.log(this.MemberRole);
-	}
+		powercord.api.settings.registerSettings(this.entityID, {
+			category: this.entityID,
+			label: 'Role Dividers',
+			render: Settings,
+		});	}
 
 	injectRoles() {
 		inject('roledividers', this.MemberRole, 'default', (_, res) => {
+			const hideEmpty  = this.settings.get('hideEmpty', true);
+
 			const rendered = res.type(res.props);
 			const rendered2 = rendered.props.children.type(rendered.props.children.props);
 			const roles = rendered2.props.children[0];
 
+			let previousWasDivider = false;
 			roles.forEach((data, i) => {
 				const role = data.props.role;
 				const name = role.name;
@@ -56,7 +65,16 @@ module.exports = class MessageTooltips extends Plugin {
 						marginTop: '8px',
 					},
 				});
+
+				if (hideEmpty) {
+					if (match && previousWasDivider) {
+						roles[i - 1] = undefined;
+					}
+					previousWasDivider = match;
+				}
 			});
+
+			if (hideEmpty && previousWasDivider) roles[roles.length - 1] = undefined;
 
 			res.type = () => rendered;
 
@@ -66,5 +84,6 @@ module.exports = class MessageTooltips extends Plugin {
 
 	pluginWillUnload() {
 		uninject('roledividers');
+		powercord.api.settings.unregisterSettings(this.entityID);
 	}
 };
