@@ -6,10 +6,10 @@ Before:
 After:  
 ![After](https://i.imgur.com/pjBgCif.png)  
 
-# Is a divider role not being shown as a divider?
+# A divider role I have is not being shown as a divider.
 This plugin was made to support a variety of divider formats. However, if a certain divider name isn't working (or is being flagged incorrectly), please create an issue with the role name so I can update the plugin to support it.
 
-# Change the divider style
+# How can I change the divider style?
 You can style the dividers by selecting `.role-divider`. Here's an example made by @12944qwerty:
 ```css
 .role-divider {
