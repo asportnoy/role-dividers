@@ -47,7 +47,7 @@ module.exports = class MessageTooltips extends Plugin {
 				const match = name.match(REGEX);
 				if (match) roles[i] = this.Heading({
 					variant: 'eyebrow',
-					className: this.bodyTitle,
+					className: `${this.bodyTitle} role-divider`,
 					color: 'header-secondary',
 					level: 3,
 					children: match[1],
