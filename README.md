@@ -10,7 +10,7 @@ After:
 This plugin was made to support a variety of divider formats. However, if a certain divider name isn't working (or is being flagged incorrectly), please create an issue with the role name so I can update the plugin to support it.
 
 # How can I change the divider style?
-You can style the dividers by selecting `.role-divider`. Here's an example made by @12944qwerty:
+You can style the dividers by selecting `.role-divider`. Here's an example made by [@12944qwerty](https://github.com/12944qwerty):
 ```css
 .role-divider {
   font-weight: normal !important;
