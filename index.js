@@ -27,7 +27,7 @@ const REGEX = new RegExp(
 	`^${SPACERS_REGEX_TEXT}(.+?)${SPACERS_REGEX_TEXT}$`,
 );
 
-module.exports = class MessageTooltips extends Plugin {
+module.exports = class RoleDividers extends Plugin {
 	async startPlugin() {
 		this.MemberRole = getModule(['MemberRole'], false);
 		this.Heading = getModule(['Heading'], false).Heading;
