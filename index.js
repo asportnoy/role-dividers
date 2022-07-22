@@ -17,6 +17,7 @@ const SPACER_CHARACTER_SET = [
 	'╶',
 	'╴',
 	'─',
+	'▬',
 	'\\-',
 	'=',
 ];
