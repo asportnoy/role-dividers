@@ -3,7 +3,7 @@ const { Plugin } = require('powercord/entities');
 const { inject, uninject } = require('powercord/injector');
 const { getModule } = require('powercord/webpack');
 
-const Settings = require('./settings');
+const Settings = require('./Settings');
 
 const SPACER_CHARACTER_SET = [
 	'\\s',
