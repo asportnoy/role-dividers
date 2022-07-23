@@ -22,6 +22,10 @@ const SPACER_CHARACTER_SET = [
 	'=',
 	'<',
 	'>',
+	'(',
+	')',
+	'\\[',
+	'\\]',
 ];
 
 const MIN_DIVIDER_CHARACTERS = 2;
