@@ -5,28 +5,7 @@ const { getModule } = require('powercord/webpack');
 
 const Settings = require('./Settings');
 
-const SPACER_CHARACTER_SET = [
-	'\\s',
-	'‏',
-	'‎',
-	'​',
-	'ㅤ',
-	'⠀',
-	'⁣',
-	'━',
-	'╶',
-	'╴',
-	'─',
-	'▬',
-	'\\-',
-	'=',
-	'<',
-	'>',
-	'(',
-	')',
-	'\\[',
-	'\\]',
-];
+const SPACER_CHARACTER_SET = require('./chars');
 
 const MIN_DIVIDER_CHARACTERS = 2;
 
