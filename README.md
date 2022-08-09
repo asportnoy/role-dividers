@@ -1,4 +1,7 @@
 # Powecord Role Dividers
+
+[Install in Replugged](https://replugged.dev/install?url=asportnoy/powercord-role-dividers)
+
 Turns "divider" roles into actual dividers.
 
 Before:  
