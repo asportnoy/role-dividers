@@ -11,7 +11,7 @@ const MIN_DIVIDER_CHARACTERS = 2;
 
 const SPACERS_REGEX_TEXT = `[${SPACER_CHARACTER_SET.join('')}]{${MIN_DIVIDER_CHARACTERS},}`;
 const REGEX = new RegExp(
-	`^${SPACERS_REGEX_TEXT}(.+?)${SPACERS_REGEX_TEXT}$`,
+	`^(?:${SPACERS_REGEX_TEXT})(.+?)(?:${SPACERS_REGEX_TEXT})?$`,
 );
 
 module.exports = class RoleDividers extends Plugin {
