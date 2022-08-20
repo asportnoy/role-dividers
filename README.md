@@ -1,7 +1,7 @@
 # Role Dividers
 Turns "divider" roles into actual dividers. Works with Replugged and Powercord.
 
-[Install in Replugged](https://replugged.dev/install?url=asportnoy/powercord-role-dividers)
+[Install in Replugged](https://replugged.dev/install?url=asportnoy/role-dividers)
 
 ## Demo
 
