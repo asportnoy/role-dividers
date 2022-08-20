@@ -1,4 +1,4 @@
-# Powecord Role Dividers
+# Role Dividers
 
 [Install in Replugged](https://replugged.dev/install?url=asportnoy/powercord-role-dividers)
 
