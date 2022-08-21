@@ -42,9 +42,7 @@ module.exports = class RoleDividers extends Plugin {
 				const name = role.name;
 				const match = name.match(REGEX);
 				const [, frontSpace, roleName, backSpace] = match || [];
-				console.log(frontSpace, roleName, backSpace);
 				const isMatch = !!(frontSpace || backSpace);
-				console.log(isMatch);
 				if (isMatch) roles[i] = this.Heading({
 					variant: 'eyebrow',
 					className: `${this.bodyTitle} role-divider`,
@@ -66,8 +64,6 @@ module.exports = class RoleDividers extends Plugin {
 			});
 
 			if (hideEmpty && previousWasDivider) roles[roles.length - 1] = undefined;
-
-			console.log(roles);
 
 			res.type = () => rendered;
 
