@@ -11,7 +11,7 @@ const MIN_DIVIDER_CHARACTERS = 2;
 
 const SPACERS_REGEX_TEXT = `[${SPACER_CHARACTER_SET.join('')}]{${MIN_DIVIDER_CHARACTERS},}`;
 const REGEX = new RegExp(
-	`^(?:${SPACERS_REGEX_TEXT})(.+?)(?:${SPACERS_REGEX_TEXT})?$`,
+	`^(${SPACERS_REGEX_TEXT})?(.+?)(${SPACERS_REGEX_TEXT})?$`,
 );
 
 module.exports = class RoleDividers extends Plugin {
@@ -41,12 +41,16 @@ module.exports = class RoleDividers extends Plugin {
 				const role = data.props.role;
 				const name = role.name;
 				const match = name.match(REGEX);
-				if (match) roles[i] = this.Heading({
+				const [, frontSpace, roleName, backSpace] = match || [];
+				console.log(frontSpace, roleName, backSpace);
+				const isMatch = !!(frontSpace || backSpace);
+				console.log(isMatch);
+				if (isMatch) roles[i] = this.Heading({
 					variant: 'eyebrow',
 					className: `${this.bodyTitle} role-divider`,
 					color: 'header-secondary',
 					level: 3,
-					children: match[1],
+					children: roleName,
 					style: {
 						width: '100%',
 						marginTop: '8px',
@@ -54,14 +58,16 @@ module.exports = class RoleDividers extends Plugin {
 				});
 
 				if (hideEmpty) {
-					if (match && previousWasDivider) {
+					if (isMatch && previousWasDivider) {
 						roles[i - 1] = undefined;
 					}
-					previousWasDivider = match;
+					previousWasDivider = isMatch;
 				}
 			});
 
 			if (hideEmpty && previousWasDivider) roles[roles.length - 1] = undefined;
+
+			console.log(roles);
 
 			res.type = () => rendered;
 
