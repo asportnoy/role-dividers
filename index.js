@@ -18,7 +18,7 @@ module.exports = class RoleDividers extends Plugin {
 	async startPlugin() {
 		this.MemberRole = getModule(['MemberRole'], false);
 		this.Heading = getModule(['Heading'], false).Heading;
-		this.bodyTitle = getModule(['bodyTitle'], false).bodyTitle;
+		this.title = getModule(['title', 'body'], false).title;
 
 		this.injectRoles();
 
@@ -45,8 +45,7 @@ module.exports = class RoleDividers extends Plugin {
 				const isMatch = !!(frontSpace || backSpace);
 				if (isMatch) roles[i] = this.Heading({
 					variant: 'eyebrow',
-					className: `${this.bodyTitle} role-divider`,
-					color: 'header-secondary',
+					className: `${this.title} role-divider`,
 					level: 3,
 					children: roleName,
 					style: {
