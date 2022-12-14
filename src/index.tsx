@@ -33,7 +33,11 @@ export async function start(): Promise<void> {
   if (!titleClass) return;
   const eyebrowClass = webpack.getByProps("eyebrow");
   if (!eyebrowClass) return;
-  const headerClass = [titleClass.title as string, eyebrowClass.eyebrow as string].join(" ");
+  const headerClass = [
+    titleClass.title as string,
+    eyebrowClass.eyebrow as string,
+    "role-divider",
+  ].join(" ");
 
   inject.instead(
     renderExport,
