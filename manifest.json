@@ -1,8 +1,18 @@
 {
-	"name": "Role Dividers",
-	"version": "1.0.14",
-	"description": "Turn divider roles into actual dividers",
-	"author": "asportnoy#6969",
-	"license": "MIT",
-	"nsfw": false
+  "id": "dev.albertp.CanaryLinks",
+  "name": "Canary Links",
+  "description": "Use discord.com instead of canary.discord.com when copying message links",
+  "author": {
+    "name": "asportnoy",
+    "discordID": "489484338514100234",
+    "github": "asportnoy"
+  },
+  "version": "1.0.0",
+  "updater": {
+    "type": "github",
+    "id": "asportnoy/canary-links"
+  },
+  "license": "MIT",
+  "type": "replugged-plugin",
+  "renderer": "src/index.ts"
 }
