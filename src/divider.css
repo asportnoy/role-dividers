@@ -1,0 +1,9 @@
+.role-divider {
+  color: var(--header-primary);
+  width: 100%;
+  margin-top: 8px;
+}
+
+.role-divider.hide-empty + .role-divider.hide-empty {
+  display: none;
+}

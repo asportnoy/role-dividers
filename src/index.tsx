@@ -1,8 +1,10 @@
 import React from "react";
 import { Injector, webpack } from "replugged";
 import SPACER_CHARACTER_SET from "./chars";
+import "./divider.css";
 
 const MIN_DIVIDER_CHARACTERS = 2;
+const HIDE_EMPTY = true; // todo: settings
 
 const SPACERS_REGEX_TEXT = `[${SPACER_CHARACTER_SET.join("")}]{${MIN_DIVIDER_CHARACTERS},}`;
 const REGEX = new RegExp(`^(${SPACERS_REGEX_TEXT})?(.+?)(${SPACERS_REGEX_TEXT})?$`);
@@ -37,7 +39,10 @@ export async function start(): Promise<void> {
     titleClass.title as string,
     eyebrowClass.eyebrow as string,
     "role-divider",
-  ].join(" ");
+    HIDE_EMPTY ? "hide-empty" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   inject.instead(
     renderExport,
@@ -51,17 +56,7 @@ export async function start(): Promise<void> {
       const [, frontSpace, roleName, backSpace] = match || [];
       const isMatch = Boolean(frontSpace || backSpace);
       if (isMatch) {
-        return (
-          <h2
-            className={headerClass}
-            style={{
-              color: "var(--header-primary)",
-              width: "100%",
-              marginTop: "8px",
-            }}>
-            {roleName}
-          </h2>
-        );
+        return <h2 className={headerClass}>{roleName}</h2>;
       }
       return fn(...args);
     },
