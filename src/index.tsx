@@ -41,9 +41,8 @@ export async function start(): Promise<void> {
     // eslint-disable-next-line no-unused-vars
     (args, fn: (...args: unknown[]) => void): React.ReactElement | void => {
       const [{ role }] = args as [
-        Record<string, unknown> & { role: Record<string, unknown> & { name: string } },
+        Record<string, unknown> & { role: Record<string, unknown> & { name: string; id: string } },
       ];
-      console.log(role.name);
       const match = role.name.match(REGEX);
       const [, frontSpace, roleName, backSpace] = match || [];
       const isMatch = Boolean(frontSpace || backSpace);
