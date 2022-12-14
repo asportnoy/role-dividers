@@ -1,7 +1,7 @@
 {
-  "id": "dev.albertp.CanaryLinks",
-  "name": "Canary Links",
-  "description": "Use discord.com instead of canary.discord.com when copying message links",
+  "id": "dev.albertp.RoleDividers",
+  "name": "Role Dividers",
+  "description": "---",
   "author": {
     "name": "asportnoy",
     "discordID": "489484338514100234",
@@ -10,9 +10,9 @@
   "version": "1.0.0",
   "updater": {
     "type": "github",
-    "id": "asportnoy/canary-links"
+    "id": "asportnoy/role-dividers"
   },
   "license": "MIT",
   "type": "replugged-plugin",
-  "renderer": "src/index.ts"
+  "renderer": "src/index.tsx"
 }
