@@ -9,34 +9,6 @@ const REGEX = new RegExp(`^(${SPACERS_REGEX_TEXT})?(.+?)(${SPACERS_REGEX_TEXT})?
 
 const inject = new Injector();
 
-// todo: we need a better way to do this
-const globalStorage: Record<string, unknown> = {};
-// @ts-expect-error
-window.replugged.plugins._devAlbertpRoledividers = globalStorage;
-
-let headerClass: string;
-
-function processRole(role: Record<string, unknown> & { name: string }): React.ReactElement | null {
-  const match = role.name.match(REGEX);
-  const [, frontSpace, roleName, backSpace] = match || [];
-  const isMatch = Boolean(frontSpace || backSpace);
-  if (isMatch) {
-    return (
-      <h2
-        className={headerClass}
-        style={{
-          color: "var(--header-primary)",
-          width: "100%",
-          marginTop: "8px",
-        }}>
-        {roleName}
-      </h2>
-    );
-  }
-
-  return null;
-}
-
 export async function start(): Promise<void> {
   const roleMod = await webpack.waitForModule(
     webpack.filters.bySource(/\w+\.canRemove,\w+=\w+\.className/),
@@ -61,31 +33,38 @@ export async function start(): Promise<void> {
   if (!titleClass) return;
   const eyebrowClass = webpack.getByProps("eyebrow");
   if (!eyebrowClass) return;
-  headerClass = [titleClass.title as string, eyebrowClass.eyebrow as string].join(" ");
+  const headerClass = [titleClass.title as string, eyebrowClass.eyebrow as string].join(" ");
 
-  globalStorage.processRole = processRole;
+  inject.instead(
+    renderExport,
+    "render",
+    // eslint-disable-next-line no-unused-vars
+    (args, fn: (...args: unknown[]) => void): React.ReactElement | void => {
+      const [{ role }] = args as [
+        Record<string, unknown> & { role: Record<string, unknown> & { name: string } },
+      ];
+      console.log(role.name);
+      const match = role.name.match(REGEX);
+      const [, frontSpace, roleName, backSpace] = match || [];
+      const isMatch = Boolean(frontSpace || backSpace);
+      if (isMatch) {
+        return (
+          <h2
+            className={headerClass}
+            style={{
+              color: "var(--header-primary)",
+              width: "100%",
+              marginTop: "8px",
+            }}>
+            {roleName}
+          </h2>
+        );
+      }
+      return fn(...args);
+    },
+  );
 }
 
 export function stop(): void {
   inject.uninjectAll();
-}
-
-export function runPlaintextPatches(): void {
-  console.log(processRole.toString());
-
-  webpack.patchPlaintext([
-    {
-      replacements: [
-        {
-          match: /(MemberRolesList.+?\.map\(\(function\((.+?)\){)(.+?)(\}\)\);)/g,
-          replace: (_, prefix, varName, code, suffix) => {
-            console.log(_, prefix, suffix);
-            const newCode = `${prefix}var val = window.replugged.plugins._devAlbertpRoledividers.processRole(${varName}); if (val) {return val;} ${code} ${suffix}`;
-            console.log(newCode);
-            return newCode;
-          },
-        },
-      ],
-    },
-  ]);
 }
