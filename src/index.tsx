@@ -30,7 +30,13 @@ export async function start(): Promise<void> {
   if (!renderExport) return;
 
   const titleClass = webpack
-    .getByProps(["title", "body"], { all: true })
+    .getByProps<
+      "title" | "body",
+      {
+        title: string;
+        body: string;
+      }
+    >(["title", "body"], { all: true })
     .find(
       (x) =>
         Object.keys(x).length === 2 &&
@@ -43,8 +49,8 @@ export async function start(): Promise<void> {
   const eyebrowClass = webpack.getByProps("eyebrow");
   if (!eyebrowClass) return;
   const headerClass = [
-    titleClass.title as string,
-    eyebrowClass.eyebrow as string,
+    titleClass.title,
+    eyebrowClass.eyebrow,
     "role-divider",
     HIDE_EMPTY ? "hide-empty" : "",
   ]
