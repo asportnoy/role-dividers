@@ -11,15 +11,22 @@ const REGEX = new RegExp(`^(${SPACERS_REGEX_TEXT})?(.+?)(${SPACERS_REGEX_TEXT})?
 
 const inject = new Injector();
 
+type RoleArg = Record<string, unknown> & {
+  role: Record<string, unknown> & { name: string; id: string };
+};
+
 export async function start(): Promise<void> {
   const roleMod = await webpack.waitForModule(
     webpack.filters.bySource(/\w+\.canRemove,\w+=\w+\.className/),
   );
   if (!roleMod) return;
-  const renderExport = webpack.getExportsForProps(roleMod, ["render"]) as {
-    // eslint-disable-next-line no-unused-vars
-    render: (opts: unknown) => React.Component;
-  };
+  const renderExport = webpack.getExportsForProps<
+    "render",
+    {
+      // eslint-disable-next-line no-unused-vars
+      render: (role: RoleArg) => React.ReactElement;
+    }
+  >(roleMod, ["render"]);
   if (!renderExport) return;
 
   const titleClass = webpack
@@ -44,23 +51,16 @@ export async function start(): Promise<void> {
     .filter(Boolean)
     .join(" ");
 
-  inject.instead(
-    renderExport,
-    "render",
-    // eslint-disable-next-line no-unused-vars
-    (args, fn: (...args: unknown[]) => void): React.ReactElement | void => {
-      const [{ role }] = args as [
-        Record<string, unknown> & { role: Record<string, unknown> & { name: string; id: string } },
-      ];
-      const match = role.name.match(REGEX);
-      const [, frontSpace, roleName, backSpace] = match || [];
-      const isMatch = Boolean(frontSpace || backSpace);
-      if (isMatch) {
-        return <h2 className={headerClass}>{roleName}</h2>;
-      }
-      return fn(...args);
-    },
-  );
+  inject.instead(renderExport, "render", (args, fn) => {
+    const [{ role }] = args;
+    const match = role.name.match(REGEX);
+    const [, frontSpace, roleName, backSpace] = match || [];
+    const isMatch = Boolean(frontSpace || backSpace);
+    if (isMatch) {
+      return <h2 className={headerClass}>{roleName}</h2>;
+    }
+    return fn(...args);
+  });
 }
 
 export function stop(): void {
