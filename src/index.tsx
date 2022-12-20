@@ -1,10 +1,9 @@
 import React from "react";
-import { Injector, webpack } from "replugged";
+import { Injector, settings, webpack } from "replugged";
 import SPACER_CHARACTER_SET from "./chars";
 import "./divider.css";
 
 const MIN_DIVIDER_CHARACTERS = 2;
-const HIDE_EMPTY = true; // todo: settings
 
 const SPACERS_REGEX_TEXT = `[${SPACER_CHARACTER_SET.join("")}]{${MIN_DIVIDER_CHARACTERS},}`;
 const REGEX = new RegExp(`^(${SPACERS_REGEX_TEXT})?(.+?)(${SPACERS_REGEX_TEXT})?$`);
@@ -15,6 +14,12 @@ type RoleArg = Record<string, unknown> & {
   role: Record<string, unknown> & { name: string; id: string };
 };
 
+const cfg = settings.get("dev.albertp.RoleDividers");
+
+async function getHideEmpty(): Promise<boolean> {
+  return ((await cfg.get("hideEmpty")) as boolean) ?? true;
+}
+
 export async function start(): Promise<void> {
   const roleMod = await webpack.waitForModule(
     webpack.filters.bySource(/\w+\.canRemove,\w+=\w+\.className/),
@@ -23,7 +28,6 @@ export async function start(): Promise<void> {
   const renderExport = webpack.getExportsForProps<
     "render",
     {
-      // eslint-disable-next-line no-unused-vars
       render: (role: RoleArg) => React.ReactElement;
     }
   >(roleMod, ["render"]);
@@ -48,11 +52,12 @@ export async function start(): Promise<void> {
   if (!titleClass) return;
   const eyebrowClass = webpack.getByProps("eyebrow");
   if (!eyebrowClass) return;
+
   const headerClass = [
     titleClass.title,
     eyebrowClass.eyebrow,
     "role-divider",
-    HIDE_EMPTY ? "hide-empty" : "",
+    (await getHideEmpty()) ? "hide-empty" : "",
   ]
     .filter(Boolean)
     .join(" ");
