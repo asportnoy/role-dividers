@@ -1,5 +1,5 @@
-import React from "react";
-import { Injector, settings, webpack } from "replugged";
+import { Injector, common, settings, webpack } from "replugged";
+const { React } = common;
 import SPACER_CHARACTER_SET from "./chars";
 import "./divider.css";
 
