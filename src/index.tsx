@@ -14,11 +14,7 @@ type RoleArg = Record<string, unknown> & {
   role: Record<string, unknown> & { name: string; id: string };
 };
 
-const cfg = settings.get("dev.albertp.RoleDividers");
-
-async function getHideEmpty(): Promise<boolean> {
-  return ((await cfg.get("hideEmpty")) as boolean) ?? true;
-}
+const cfg = await settings.init("dev.albertp.RoleDividers");
 
 export async function start(): Promise<void> {
   const roleMod = await webpack.waitForModule(
@@ -53,16 +49,16 @@ export async function start(): Promise<void> {
   const eyebrowClass = webpack.getByProps("eyebrow");
   if (!eyebrowClass) return;
 
-  const headerClass = [
-    titleClass.title,
-    eyebrowClass.eyebrow,
-    "role-divider",
-    (await getHideEmpty()) ? "hide-empty" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
   inject.instead(renderExport, "render", (args, fn) => {
+    const headerClass = [
+      titleClass.title,
+      eyebrowClass.eyebrow,
+      "role-divider",
+      cfg.get("hideEmpty") ? "hide-empty" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
     const [{ role }] = args;
     const match = role.name.match(REGEX);
     const [, frontSpace, roleName, backSpace] = match || [];
