@@ -1,5 +1,5 @@
-import { Injector, common, settings, webpack } from "replugged";
-const { React } = common;
+import { Injector, components, settings, webpack } from "replugged";
+const { Text } = components;
 import SPACER_CHARACTER_SET from "./chars";
 import "./divider.css";
 
@@ -29,33 +29,8 @@ export async function start(): Promise<void> {
   >(roleMod, ["render"]);
   if (!renderExport) return;
 
-  const titleClass = webpack
-    .getByProps<
-      "title" | "body",
-      {
-        title: string;
-        body: string;
-      }
-    >(["title", "body"], { all: true })
-    .find(
-      (x) =>
-        Object.keys(x).length === 2 &&
-        typeof x.title === "string" &&
-        typeof x.body === "string" &&
-        x.title.startsWith("title-") &&
-        x.body.startsWith("body-"),
-    );
-  if (!titleClass) return;
-  const eyebrowClass = webpack.getByProps("eyebrow");
-  if (!eyebrowClass) return;
-
   inject.instead(renderExport, "render", (args, fn) => {
-    const headerClass = [
-      titleClass.title,
-      eyebrowClass.eyebrow,
-      "role-divider",
-      cfg.get("hideEmpty") ? "hide-empty" : "",
-    ]
+    const headerClass = ["role-divider", cfg.get("hideEmpty") ? "hide-empty" : ""]
       .filter(Boolean)
       .join(" ");
 
@@ -64,7 +39,7 @@ export async function start(): Promise<void> {
     const [, frontSpace, roleName, backSpace] = match || [];
     const isMatch = Boolean(frontSpace || backSpace);
     if (isMatch) {
-      return <h2 className={headerClass}>{roleName}</h2>;
+      return <Text.Eyebrow className={headerClass}>{roleName}</Text.Eyebrow>;
     }
     return fn(...args);
   });

@@ -1,7 +1,7 @@
 .role-divider {
   color: var(--header-primary);
   width: 100%;
-  margin-top: 8px;
+  margin: 6px 0px;
 }
 
 .role-divider.hide-empty + .role-divider.hide-empty {
