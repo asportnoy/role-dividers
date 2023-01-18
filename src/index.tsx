@@ -128,7 +128,7 @@ export async function start(): Promise<void> {
           lastWasDivider = isDivider;
 
           if (isDivider) {
-            if (realLastWasDivider) {
+            if (realLastWasDivider || i === 0) {
               roles[i] = null;
             }
           }
