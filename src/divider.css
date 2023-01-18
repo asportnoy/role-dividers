@@ -4,6 +4,9 @@
   margin: 6px 0px;
 }
 
-.role-divider.hide-empty + .role-divider.hide-empty {
-  display: none;
+.role-divider-collapse {
+  width: 16px;
+  height: 16px;
+  vertical-align: top;
+  transition: transform 0.2s ease;
 }

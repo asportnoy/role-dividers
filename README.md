@@ -9,10 +9,12 @@ Before:
 After:  
 ![After](https://i.imgur.com/pjBgCif.png)
 
-# Coming soon
+## Settings
 
-- Hiding dividers with no roles under them
-- Option to enable/disable the above
+Disable hiding empty dividers by setting `hideEmpty` to false.  
+Disable collapsible dividers by setting `enableCollapse` to false.
+
+Settings UI coming eventually™.
 
 ## FAQ
 
