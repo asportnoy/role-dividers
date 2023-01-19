@@ -2,7 +2,7 @@ export default (props: { collapsed: boolean }) => (
   <svg
     className="role-divider-collapse"
     style={{
-      transform: props.collapsed ? "rotate(180deg)" : "rotate(0deg)",
+      transform: props.collapsed ? "rotate(-90deg)" : "rotate(0deg)",
     }}
     width="16"
     height="16"
