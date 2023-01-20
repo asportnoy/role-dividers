@@ -1,6 +1,6 @@
 import { cfg } from ".";
-import { settings, components } from "replugged";
-const { SwitchItem, FormItem, FormText } = components;
+import { components } from "replugged";
+const { SwitchItem } = components;
 
 export function Settings() {
   return (
