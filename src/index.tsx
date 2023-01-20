@@ -39,7 +39,10 @@ const settingDefaults: Partial<Settings> = {
   collapsedRoles: [],
 };
 
-export const cfg = await settings.init<Settings>("dev.albertp.RoleDividers", settingDefaults);
+export const cfg = await settings.init<Settings, keyof typeof settingDefaults>(
+  "dev.albertp.RoleDividers",
+  settingDefaults,
+);
 let forceUpdate: () => void;
 
 function matchRole(role: string): { isMatch: boolean; roleName: string } {
