@@ -109,34 +109,20 @@ if ("renderer" in manifest) {
   manifest.renderer = "renderer.js";
 }
 
-if ("preload" in manifest) {
+if ("settings" in manifest) {
   targets.push(
     esbuild.build({
       ...common,
-      entryPoints: [manifest.preload],
-      platform: "node",
-      target: [`node${NODE_VERSION}`, `chrome${CHROME_VERSION}`],
-      outfile: "dist/preload.js",
-      external: ["electron"],
+      entryPoints: [manifest.settings],
+      platform: "browser",
+      target: `chrome${CHROME_VERSION}`,
+      outfile: "dist/settings.js",
+      format: "esm" as esbuild.Format,
+      plugins: [globalModules, install],
     }),
   );
 
-  manifest.preload = "preload.js";
-}
-
-if ("main" in manifest) {
-  targets.push(
-    esbuild.build({
-      ...common,
-      entryPoints: [manifest.main],
-      platform: "node",
-      target: `node${NODE_VERSION}`,
-      outfile: "dist/main.js",
-      external: ["electron"],
-    }),
-  );
-
-  manifest.main = "main.js";
+  manifest.settings = "settings.js";
 }
 
 if ("plaintextPatches" in manifest) {
