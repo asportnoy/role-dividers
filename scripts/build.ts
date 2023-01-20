@@ -6,7 +6,6 @@ import { PluginManifest } from "replugged/dist/types/addon";
 
 const manifest: PluginManifest = _manifest;
 
-const NODE_VERSION = "14";
 const CHROME_VERSION = "91";
 
 const globalModules: esbuild.Plugin = {
