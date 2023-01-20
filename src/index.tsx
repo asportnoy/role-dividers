@@ -43,6 +43,9 @@ export const cfg = await settings.init<Settings, keyof typeof settingDefaults>(
   "dev.albertp.RoleDividers",
   settingDefaults,
 );
+
+export { Settings } from "./Settings";
+
 let forceUpdate: () => void;
 
 function matchRole(role: string): { isMatch: boolean; roleName: string } {
@@ -191,5 +194,3 @@ export async function start(): Promise<void> {
 export function stop(): void {
   inject.uninjectAll();
 }
-
-export { Settings } from "./Settings";
