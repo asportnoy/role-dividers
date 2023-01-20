@@ -9,13 +9,6 @@ Before:
 After:  
 ![After](https://i.imgur.com/pjBgCif.png)
 
-## Settings
-
-Disable hiding empty dividers by setting `hideEmpty` to false.  
-Disable collapsible dividers by setting `enableCollapse` to false.
-
-Settings UI coming eventually™.
-
 ## FAQ
 
 ### A divider role I have is not being shown as a divider.
