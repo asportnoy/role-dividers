@@ -13,7 +13,7 @@ export function Settings() {
       <SwitchItem
         note="If enabled, you can collapse dividers by clicking on them. This will hide all roles under
         the divider."
-        {...cfg.useSetting("hideEmpty")}>
+        {...cfg.useSetting("enableCollapse")}>
         Enable collapsing
       </SwitchItem>
     </div>
