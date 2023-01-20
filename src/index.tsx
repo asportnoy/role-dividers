@@ -191,3 +191,5 @@ export async function start(): Promise<void> {
 export function stop(): void {
   inject.uninjectAll();
 }
+
+export { Settings } from "./Settings";

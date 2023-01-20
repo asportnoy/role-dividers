@@ -2,7 +2,7 @@ import { cfg } from ".";
 import { settings, components } from "replugged";
 const { SwitchItem, FormItem, FormText } = components;
 
-export default () => {
+export function Settings() {
   return (
     <div>
       <SwitchItem
@@ -18,4 +18,4 @@ export default () => {
       </SwitchItem>
     </div>
   );
-};
+}

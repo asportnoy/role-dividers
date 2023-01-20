@@ -109,22 +109,6 @@ if ("renderer" in manifest) {
   manifest.renderer = "renderer.js";
 }
 
-if ("settings" in manifest) {
-  targets.push(
-    esbuild.build({
-      ...common,
-      entryPoints: [manifest.settings],
-      platform: "browser",
-      target: `chrome${CHROME_VERSION}`,
-      outfile: "dist/settings.js",
-      format: "esm" as esbuild.Format,
-      plugins: [globalModules, install],
-    }),
-  );
-
-  manifest.settings = "settings.js";
-}
-
 if ("plaintextPatches" in manifest) {
   targets.push(
     esbuild.build({
