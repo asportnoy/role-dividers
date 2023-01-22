@@ -33,7 +33,19 @@ type Settings = {
   collapsedRoles?: string[];
 };
 
-const cfg = await settings.init<Settings>("dev.albertp.RoleDividers");
+const settingDefaults: Partial<Settings> = {
+  hideEmpty: true,
+  enableCollapse: true,
+  collapsedRoles: [],
+};
+
+export const cfg = await settings.init<Settings, keyof typeof settingDefaults>(
+  "dev.albertp.RoleDividers",
+  settingDefaults,
+);
+
+export { Settings } from "./Settings";
+
 let forceUpdate: () => void;
 
 function matchRole(role: string): { isMatch: boolean; roleName: string } {
@@ -45,7 +57,7 @@ function matchRole(role: string): { isMatch: boolean; roleName: string } {
 }
 
 function toggleCollapse(role: string): void {
-  const collapsedRoles = cfg.get("collapsedRoles", [] as string[]);
+  const collapsedRoles = cfg.get("collapsedRoles");
   if (collapsedRoles.includes(role)) {
     cfg.set(
       "collapsedRoles",
@@ -59,7 +71,7 @@ function toggleCollapse(role: string): void {
 }
 
 function isCollapsed(role: string): boolean {
-  return cfg.get("collapsedRoles", [] as string[]).includes(role);
+  return cfg.get("collapsedRoles").includes(role);
 }
 
 export async function start(): Promise<void> {
@@ -87,8 +99,8 @@ export async function start(): Promise<void> {
       const [state, setState] = React.useState(0);
       forceUpdate = () => setState(state + 1);
 
-      const hideEmpty = cfg.get("hideEmpty", true);
-      const enableCollapse = cfg.get("enableCollapse", true);
+      const hideEmpty = cfg.get("hideEmpty");
+      const enableCollapse = cfg.get("enableCollapse");
 
       const guildRoles = args.guild.roles;
       // Want to make sure we're not modifying the original array
@@ -160,7 +172,7 @@ export async function start(): Promise<void> {
   });
 
   inject.instead(renderExport, "render", (args, fn) => {
-    const enableCollapse = cfg.get("enableCollapse", true);
+    const enableCollapse = cfg.get("enableCollapse");
 
     const [{ role }] = args;
     const { isMatch, roleName } = matchRole(role.name);
