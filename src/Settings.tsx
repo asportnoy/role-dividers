@@ -1,5 +1,5 @@
 import { cfg } from ".";
-import { components } from "replugged";
+import { components, util } from "replugged";
 const { SwitchItem } = components;
 
 export function Settings() {
@@ -7,13 +7,13 @@ export function Settings() {
     <div>
       <SwitchItem
         note="If a divider has no roles under it, it will be hidden."
-        {...cfg.useSetting("hideEmpty")}>
+        {...util.useSetting(cfg, "hideEmpty")}>
         Hide empty dividers
       </SwitchItem>
       <SwitchItem
         note="If enabled, you can collapse dividers by clicking on them. This will hide all roles under
         the divider."
-        {...cfg.useSetting("enableCollapse")}>
+        {...util.useSetting(cfg, "enableCollapse")}>
         Enable collapsing
       </SwitchItem>
     </div>
