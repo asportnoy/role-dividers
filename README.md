@@ -1,6 +1,8 @@
 # Role Dividers
 
-Make "divider" roles into actual dividers. Works with Replugged.
+Make "divider" roles into actual dividers.
+
+[![Install in Replugged](https://img.shields.io/badge/-Install%20in%20Replugged-blue?style=for-the-badge&logo=none)](https://replugged.dev/install?identifier=asportnoy/role-dividers&source=github)
 
 ## Demo
 
