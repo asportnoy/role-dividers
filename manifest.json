@@ -9,8 +9,8 @@
   },
   "version": "1.3.2",
   "updater": {
-    "type": "github",
-    "id": "asportnoy/role-dividers"
+    "type": "store",
+    "id": "dev.albertp.RoleDividers"
   },
   "license": "MIT",
   "type": "replugged-plugin",
