@@ -78,12 +78,9 @@ export async function start(): Promise<void> {
   const roleMod = await webpack.waitForModule(
     webpack.filters.bySource(/\w+\.canRemove,\w+=\w+\.className/),
   );
-  const renderExport = webpack.getExportsForProps<
-    "render",
-    {
-      render: (role: RoleArg) => React.ReactElement;
-    }
-  >(roleMod, ["render"]);
+  const renderExport = webpack.getExportsForProps<{
+    render: (role: RoleArg) => React.ReactElement;
+  }>(roleMod, ["render"]);
   if (!renderExport) return;
 
   const memberRoleList = await webpack.waitForModule<
