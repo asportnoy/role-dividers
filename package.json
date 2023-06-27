@@ -23,9 +23,9 @@
   "devDependencies": {
     "@fal-works/esbuild-plugin-global-externals": "^2.1.2",
     "@types/node": "^18.16.18",
-    "@types/react": "^18.2.13",
-    "@typescript-eslint/eslint-plugin": "^5.60.0",
-    "@typescript-eslint/parser": "^5.60.0",
+    "@types/react": "^18.2.14",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
     "discord-types": "^1.3.26",
     "eslint": "^8.43.0",
     "eslint-config-dmitmel": "github:dmitmel/eslint-config-dmitmel",

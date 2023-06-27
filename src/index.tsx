@@ -1,10 +1,7 @@
 import { Guild, Role, User } from "discord-types/general";
 import { Injector, common, components, settings, webpack } from "replugged";
-const {
-  React,
-  lodash: { compact },
-} = common;
-const { Text } = components;
+const { React } = common;
+const { Clickable, Text } = components;
 import SPACER_CHARACTER_SET from "./chars";
 import Collapse from "./Collapse";
 import "./divider.css";
@@ -24,7 +21,6 @@ type RoleListArg = Record<string, unknown> & {
   guild: Guild;
   user: User;
   userRoles: string[];
-  _roleDividersOriginalRoles: string[];
 };
 
 type Settings = {
@@ -74,12 +70,14 @@ function isCollapsed(role: string): boolean {
   return cfg.get("collapsedRoles").includes(role);
 }
 
+const hiddenRoles = new Set<string>();
+
 export async function start(): Promise<void> {
   const roleMod = await webpack.waitForModule(
     webpack.filters.bySource(/\w+\.canRemove,\w+=\w+\.className/),
   );
   const renderExport = webpack.getExportsForProps<{
-    render: (role: RoleArg) => React.ReactElement;
+    render: (role: RoleArg) => React.ReactNode;
   }>(roleMod, ["render"]);
   if (!renderExport) return;
 
@@ -91,7 +89,9 @@ export async function start(): Promise<void> {
   )?.[0];
   if (!memberRoleListExport) return;
 
-  inject.instead(memberRoleList, memberRoleListExport, ([args], fn) => {
+  console.log(roleMod, memberRoleList);
+
+  inject.before(memberRoleList, memberRoleListExport, ([args]) => {
     return ((args: RoleListArg) => {
       const [state, setState] = React.useState(0);
       forceUpdate = () => setState(state + 1);
@@ -99,10 +99,10 @@ export async function start(): Promise<void> {
       const hideEmpty = cfg.get("hideEmpty");
       const enableCollapse = cfg.get("enableCollapse");
 
+      hiddenRoles.clear();
+
       const guildRoles = args.guild.roles;
-      // Want to make sure we're not modifying the original array
-      args._roleDividersOriginalRoles ||= args.userRoles;
-      let roles: Array<string | null> = Array.from(args._roleDividersOriginalRoles).sort((a, b) => {
+      let roles: string[] = Array.from(args.userRoles).sort((a, b) => {
         const aRole: Role = guildRoles[a];
         const bRole: Role = guildRoles[b];
         if (!aRole || !bRole) return 0;
@@ -110,11 +110,11 @@ export async function start(): Promise<void> {
       });
       const dividers = new Set<string>();
 
-      for (const [i, id] of roles.entries()) {
+      for (const id of roles) {
         if (!id) continue;
         const role = guildRoles[id];
         if (!role) {
-          roles[i] = null;
+          hiddenRoles.add(id);
           continue;
         }
         const { isMatch } = matchRole(role.name);
@@ -127,18 +127,18 @@ export async function start(): Promise<void> {
         // Reversing the array makes it easier to deal with this
         roles.reverse();
 
-        let lastWasDivider = false;
+        let lastWasDivider = true;
 
         // Filter out all dividers that do not have a divider before them (remember that the array is reversed)
-        for (const [i, id] of roles.entries()) {
-          if (!id) continue;
+        for (const id of roles) {
+          if (hiddenRoles.has(id)) continue;
           const isDivider = dividers.has(id);
           const realLastWasDivider = lastWasDivider;
           lastWasDivider = isDivider;
 
           if (isDivider) {
-            if (realLastWasDivider || i === 0) {
-              roles[i] = null;
+            if (realLastWasDivider) {
+              hiddenRoles.add(id);
             }
           }
         }
@@ -150,21 +150,16 @@ export async function start(): Promise<void> {
         // Filter out all roles under collapsed dividers until we hit another divider
         let isSectionHidden = false;
 
-        for (const [i, id] of roles.entries()) {
-          if (!id) continue;
+        for (const id of roles) {
+          if (hiddenRoles.has(id)) continue;
           const isDivider = dividers.has(id);
           if (isDivider) {
             isSectionHidden = isCollapsed(id);
           } else if (isSectionHidden) {
-            roles[i] = null;
+            hiddenRoles.add(id);
           }
         }
       }
-
-      args.userRoles = compact(roles).reverse();
-
-      const result: React.ReactElement = fn(args);
-      return result;
     })(args);
   });
 
@@ -172,16 +167,18 @@ export async function start(): Promise<void> {
     const enableCollapse = cfg.get("enableCollapse");
 
     const [{ role }] = args;
+    if (hiddenRoles.has(role.id)) return null;
     const { isMatch, roleName } = matchRole(role.name);
     if (isMatch) {
-      // Todo: switch to Clickable once released
       return (
-        <a onClick={() => enableCollapse && toggleCollapse(role.id)} style={{ width: "100%" }}>
+        <Clickable
+          onClick={() => enableCollapse && toggleCollapse(role.id)}
+          style={{ width: "100%" }}>
           <Text.Eyebrow className="role-divider">
             {enableCollapse && <Collapse collapsed={isCollapsed(role.id)} />}
             {roleName}
           </Text.Eyebrow>
-        </a>
+        </Clickable>
       );
     }
     return fn(...args);
