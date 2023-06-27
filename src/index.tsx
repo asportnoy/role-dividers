@@ -89,8 +89,6 @@ export async function start(): Promise<void> {
   )?.[0];
   if (!memberRoleListExport) return;
 
-  console.log(roleMod, memberRoleList);
-
   inject.before(memberRoleList, memberRoleListExport, ([args]) => {
     return ((args: RoleListArg) => {
       const [state, setState] = React.useState(0);
