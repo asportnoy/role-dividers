@@ -15,6 +15,7 @@ const inject = new Injector();
 
 type RoleArg = Record<string, unknown> & {
   role: Record<string, unknown> & { name: string; id: string };
+  className: string;
 };
 
 type RoleListArg = Record<string, unknown> & {
@@ -164,7 +165,10 @@ export async function start(): Promise<void> {
   inject.instead(renderExport, "render", (args, fn) => {
     const enableCollapse = cfg.get("enableCollapse");
 
-    const [{ role }] = args;
+    const [{ className, role }] = args;
+    // Do not inject into the members tab or other parts of the app besides the profile role list
+    if (!/^rolePill-/.test(className)) return fn(...args);
+
     if (hiddenRoles.has(role.id)) return null;
     const { isMatch, roleName } = matchRole(role.name);
     if (isMatch) {
